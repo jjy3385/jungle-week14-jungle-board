@@ -1,0 +1,149 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "jjy3385",
+      "email": "jjy3386@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "7153",
+      "username": "jyjin",
+      "email": "jjy880102@naver.com",
+      "password": "1234"
+    },
+    {
+      "id": "c3b0",
+      "username": "jjjj",
+      "email": "jjy@naver.com",
+      "password": "1234"
+    }
+  ],
+  "posts": [
+    {
+      "id": "1",
+      "title": "제목입니다 1 ",
+      "content": "React 게시판을 시작합니다.!!!!",
+      "author": "jjy3385"
+    },
+    {
+      "id": "2",
+      "title": "제목입니다 2 ",
+      "content": "내용입니다",
+      "author": "jjy3385"
+    },
+    {
+      "id": "3",
+      "title": "제목입니다 3 ",
+      "content": "내용입니다",
+      "author": "jjy3385"
+    },
+    {
+      "id": "4",
+      "title": "제목입니다 4",
+      "content": "내용입니다",
+      "author": "jjy3385"
+    },
+    {
+      "id": "5",
+      "title": "제목입니다 5",
+      "content": "내용입니다",
+      "author": "jjy3385"
+    },
+    {
+      "id": "6",
+      "title": "제목입니다 6",
+      "content": "내용입니다",
+      "author": "jjy3385"
+    },
+    {
+      "id": "7",
+      "title": "제목입니다 7",
+      "content": "내용입니다",
+      "author": "jjy3385"
+    },
+    {
+      "id": "8",
+      "title": "제목입니다 8",
+      "content": "내용입니다",
+      "author": "jjy3385"
+    },
+    {
+      "id": "9",
+      "title": "제목입니다 9",
+      "content": "내용입니다",
+      "author": "jjy3385"
+    },
+    {
+      "id": "10",
+      "title": "제목입니다 10",
+      "content": "내용입니다",
+      "author": "jjy3385"
+    },
+    {
+      "id": "11",
+      "title": "제목입니다 11",
+      "content": "내용입니다",
+      "author": "jjy3385"
+    },
+    {
+      "id": "12",
+      "title": "제목입니다 12",
+      "content": "내용입니다",
+      "author": "jjy3385"
+    },
+    {
+      "id": "13",
+      "title": "제목입니다 13",
+      "content": "내용입니다",
+      "author": "jjy3385"
+    },
+    {
+      "id": "14",
+      "title": "제목입니다 14",
+      "content": "내용입니다",
+      "author": "jjy3385"
+    },
+    {
+      "id": "15",
+      "title": "제목입니다 15",
+      "content": "내용입니다",
+      "author": "jjy3385"
+    },
+    {
+      "id": "16",
+      "title": "제목입니다 16",
+      "content": "내용입니다",
+      "author": "jjy3385"
+    },
+    {
+      "id": "17",
+      "title": "제목입니다 17",
+      "content": "내용입니다",
+      "author": "jjy3385"
+    }
+  ],
+  "comments": [
+    {
+      "id": "53b4",
+      "postId": "3efa",
+      "author": "jjy3385",
+      "content": "댓글테스트 수정",
+      "createdAt": "2025-10-20T14:31:33.572Z"
+    },
+    {
+      "id": "cd3e",
+      "postId": "1",
+      "author": "jyjin",
+      "content": "좋아요\n",
+      "createdAt": "2025-10-20T15:18:29.458Z"
+    },
+    {
+      "id": "fbcb",
+      "postId": "1",
+      "author": "jjy3385",
+      "content": "ㅁㄷㄻㅈㄷㄹ",
+      "createdAt": "2025-10-20T16:59:43.055Z"
+    }
+  ]
+}

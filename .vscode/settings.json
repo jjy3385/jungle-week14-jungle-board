@@ -1,0 +1,44 @@
+{
+  // 기본 포매터: JS/React는 Prettier
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // 언어별 설정
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // Python 전용 포매터: Black
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+
+  // 저장 시 자동 포맷
+  "editor.formatOnSave": true,
+
+  // 줄 끝 개행 (유닉스 스타일)
+  "files.eol": "\n",
+
+  // CSS @tailwind 경고 무시
+  "css.lint.unknownAtRules": "ignore",
+
+  // Prettier 세부 옵션
+  "prettier.singleQuote": true,
+  "prettier.semi": true,
+  "prettier.trailingComma": "es5",
+  "prettier.printWidth": 80,
+  "prettier.tabWidth": 2,
+
+  // Black 세부 옵션
+  "black-formatter.args": ["--line-length", "88"],
+  "python-envs.defaultEnvManager": "ms-python.python:system",
+  "python-envs.pythonProjects": []
+}
