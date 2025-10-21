@@ -1,40 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { apiFetch } from '../api/client';
 
 function Home() {
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
+  const { user, logout, initializing } = useAuth();
+
+  //페이징 처리
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  //페이지 당 게시글 수
-  const limit = 5;
-
-  //로그인 사용자 정보
-  const user = JSON.parse(localStorage.getItem('user'));
+  const limit = 10;
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await fetch(
-          `http://localhost:4000/posts?_page=${page}&_limit=${limit}`
-        );
-        const data = await res.json();
-        const totalCount = res.headers.get('x-total-count');
-        console.log(totalCount);
-        setTotalPages(Math.ceil(totalCount / limit));
-        setPosts(data);
-      } catch (error) {
-        console.error('데이터 불러오기 실패:', error);
+    (async () => {
+      const res = await apiFetch(`/posts?_page=${page}&_limit=${limit}`);
+      if (!res.ok) {
+        alert('게시글을 불러오지 못했습니다.');
+        return;
       }
-    };
-    fetchPosts();
-  }, []);
+      setPosts(await res.json());
+      const totalCount = Number(res.headers.get('x-total-count') ?? 0);
+      setTotalPages(Math.max(1, Math.ceil(totalCount / limit)));
+    })();
+  }, [page]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('user');
+  const handleLogout = async () => {
+    await logout();
     alert('로그아웃 되었습니다.');
-    navigate('/');
   };
+
+  if (initializing) {
+    return <div className="p-8">세션 확인 중...</div>;
+  }
 
   return (
     <div className="p-8">

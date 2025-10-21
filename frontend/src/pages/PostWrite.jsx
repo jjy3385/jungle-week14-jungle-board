@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from '../hooks/useForm';
+import { useAuth } from '../context/AuthContext';
+import { apiFetch } from '../api/client';
 
 function PostWrite() {
   const { values, handleChange, reset } = useForm({
@@ -8,30 +10,28 @@ function PostWrite() {
     content: '',
   });
   const navigate = useNavigate();
+  const { user, initializing } = useAuth();
 
-  // 로그인 사용자 정보
-  const user = JSON.parse(localStorage.getItem('user'));
-
-  if (!user) {
-    alert('로그인 후 이용해주세요.');
-    navigate('/login');
-    return null;
-  }
+  useEffect(() => {
+    if (!initializing && !user) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+    }
+  }, [initializing, user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newPost = { ...values, author: user.username };
-
-    const res = await fetch('http://localhost:4000/posts', {
+    const res = await apiFetch('/posts', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newPost),
+      body: JSON.stringify(values),
     });
 
     if (res.ok) {
       alert('게시글이 등록되었습니다.');
       reset();
       navigate('/');
+    } else {
+      alert('게시글 등록에 실패했습니다.');
     }
   };
 

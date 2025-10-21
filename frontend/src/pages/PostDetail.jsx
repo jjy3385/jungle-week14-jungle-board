@@ -2,35 +2,39 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import CommentForm from '../components/CommentForm';
 import CommentList from '../components/CommentList';
+import { apiFetch } from '../api/client';
+import { useAuth } from '../context/AuthContext';
 
 function PostDetail() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
-
-  //로그인 사용자 정보
-  const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const res = await fetch(`http://localhost:4000/posts/${id}`);
-        const data = await res.json();
-        setPost(data);
-      } catch (error) {
-        console.error('Error fetching post:', error);
+    (async () => {
+      const res = await apiFetch(`/posts/${id}`);
+      if (!res.ok) {
+        alert('게시글을 불러오지 못했습니다.');
+        navigate();
+        return;
       }
-    };
-
-    fetchPost();
-  }, [id]);
+      setPost(await res.json());
+    })();
+  }, [id, navigate]);
 
   const handleDelete = async () => {
     if (!window.confirm('정말 삭제하시겠습니까?')) return;
-    await fetch(`http://localhost:4000/posts/${id}`, { method: 'DELETE' });
-    alert('삭제되었습니다.');
-    navigate('/');
+    const res = await apiFetch(`/posts/${id}`, { method: 'DELETE' });
+    if (res.ok) {
+      alert('삭제되었습니다.');
+      navigate('/');
+    } else if (res.status === 403) {
+      alert('본인 글만 삭제할 수 있습니다.');
+    } else {
+      alert('삭제에 실패했습니다.');
+    }
   };
 
   if (!post) return <div>로딩중...</div>;

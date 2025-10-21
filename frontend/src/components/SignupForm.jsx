@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from '../hooks/useForm';
 import { useNavigate } from 'react-router-dom';
+import { apiFetch } from '../api/client';
 
 function SignupForm() {
   const { values, handleChange, reset } = useForm({
@@ -13,20 +14,18 @@ function SignupForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch(`http://localhost:4000/signup`, {
+    const res = await apiFetch('/signup', {
       method: 'POST',
-      header: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify(values),
     });
 
     if (res.ok) {
-      alert('회원가입 성공! 로그인 페이지로 이동합니다.');
+      alert('회원가입 완료! 로그인 페이지로 이동합니다.');
       reset();
       navigate('/login');
     } else {
-      alert('회원가입 실패');
+      const body = await res.json().catch(() => ({}));
+      alert(body.detail ?? '회원가입에 실패했습니다');
     }
   };
 

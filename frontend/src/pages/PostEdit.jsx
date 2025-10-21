@@ -1,41 +1,58 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from '../hooks/useForm';
+import { useAuth } from '../context/AuthContext';
+import { apiFetch } from '../api/client';
 
 function PostEdit() {
   const { id } = useParams();
   const { values, handleChange, reset } = useForm({ title: '', content: '' });
   const navigate = useNavigate();
-
-  //로그인 사용자 정보
-  const user = JSON.parse(localStorage.getItem('user'));
+  const { user, initializing } = useAuth();
 
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const res = await fetch(`http://localhost:4000/posts/${id}`);
-        const data = await res.json();
-        reset(data);
-      } catch (error) {
-        console.error('Error fetching post:', error);
+    (async () => {
+      const res = await apiFetch(`/posts/${id}`);
+      if (!res.ok) {
+        alert('게시글을 불러오지 못했습니다.');
+        navigate('/');
+        return;
       }
-    };
+      reset(await res.json());
+    })();
+  }, [id, reset, navigate]);
 
-    fetchPost();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  useEffect(() => {
+    if (!initializing && !user) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+    }
+  }, [initializing, user, navigate]);
+
+  if (initializing || !user) {
+    return null;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await fetch(`http://localhost:4000/posts/${id}`, {
+    const payload = {
+      title: values.title,
+      content: values.content,
+    };
+    const res = await apiFetch(`/posts/${id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...values, author: user.username }),
+      body: JSON.stringify(payload),
     });
 
-    alert('수정되었습니다.');
-    navigate(`/posts/${id}`);
+    if (res.ok) {
+      alert('수정이 완료되었습니다.');
+      navigate(`/posts/${id}`);
+    } else if (res.status === 403) {
+      alert('본인 글만 수정할 수 있습니다.');
+    } else {
+      alert('수정에 실패했습니다.');
+    }
   };
 
   return (

@@ -1,20 +1,18 @@
 from pydantic import BaseModel
 
 
-class CommentBase(BaseModel):
+class CommentCreate(BaseModel):
     postId: str
-    author: str
     content: str
-
-
-class CommentCreate(CommentBase):
-    pass
 
 
 class CommentUpdate(BaseModel):
     content: str
 
 
-class Comment(CommentBase):
+class Comment(BaseModel):
     id: str
+    postId: str
+    author: str
+    content: str
     createdAt: str

@@ -6,19 +6,22 @@ import LoginForm from './components/LoginForm';
 import PostDetail from './pages/PostDetail';
 import PostWrite from './pages/PostWrite';
 import PostEdit from './pages/PostEdit';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<SignupForm />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/posts/:id" element={<PostDetail />} />
-        <Route path="/write" element={<PostWrite />} />
-        <Route path="/edit/:id" element={<PostEdit />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<SignupForm />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/posts/:id" element={<PostDetail />} />
+          <Route path="/write" element={<PostWrite />} />
+          <Route path="/edit/:id" element={<PostEdit />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 export default App;

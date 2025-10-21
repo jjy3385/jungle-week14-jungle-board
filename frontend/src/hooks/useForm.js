@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useCallback, useState, useRef } from 'react';
 
 export function useForm(initialvalues) {
+  const initialRef = useRef(initialvalues);
   const [values, setValues] = useState(initialvalues);
 
   //모든 input에서 공통으로 사용하는 onChange 핸들러
@@ -11,9 +12,9 @@ export function useForm(initialvalues) {
       [name]: value,
     }));
   };
-  // initialvalues가 기본값으로 적용됨
-  const reset = (newValues = initialvalues) => {
+  //무한요청 방지 useCallback 사용
+  const reset = useCallback((newValues = initialRef.current) => {
     setValues(newValues);
-  };
+  }, []);
   return { values, handleChange, reset };
 }

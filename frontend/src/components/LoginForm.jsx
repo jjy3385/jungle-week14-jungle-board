@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from '../hooks/useForm';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 function LoginForm() {
   const { values, handleChange, reset } = useForm({
@@ -8,24 +9,17 @@ function LoginForm() {
     password: '',
   });
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    //username/password 일치하는지 확인
-    const res = await fetch(
-      `http://localhost:4000/users?username=${values.username}&password=${values.password}`
-    );
-    const data = await res.json();
-
-    if (data.length > 0) {
-      //로그인 성공 시 localStorage 사용
-      localStorage.setItem('user', JSON.stringify(data[0]));
-      alert(`로그인 성공! 환영합니다 ${data[0].username}님!`);
+    try {
+      await login(values);
+      alert('로그인 성공!');
       reset();
       navigate('/');
-    } else {
-      alert('아이디 또는 비밀번호가 올바르지 않습니다.');
+    } catch (error) {
+      alert(error.message);
     }
   };
 

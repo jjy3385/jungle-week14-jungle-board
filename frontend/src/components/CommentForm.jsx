@@ -1,41 +1,31 @@
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { apiFetch } from '../api/client';
 
 function CommentForm({ postId, onCommentAdded }) {
   const [content, setContent] = useState('');
-
-  //로그인 사용자 정보
-  const user = JSON.parse(localStorage.getItem('user'));
+  const { user } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!content.trim()) return;
 
     if (!user) {
-      alert('로그인 후 댓글을 작성할 수 있습니다.');
+      alert('로그인 후 이용해주세요.');
       return;
     }
 
-    const newComment = {
-      postId,
-      author: user.username,
-      content,
-      createdAt: new Date().toISOString(),
-    };
-
-    try {
-      const res = await fetch('http://localhost:4000/comments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newComment),
-      });
-      if (!res.ok) throw new Error('댓글 등록 실패');
-
-      setContent('');
-      onCommentAdded(); //댓글 목록 새로고침
-    } catch (err) {
-      console.error(err);
-      alert('댓글 등록 중 오류가 발생했습니다.');
+    const res = await apiFetch('/comments', {
+      method: 'POST',
+      body: JSON.stringify({ postId, content }),
+    });
+    if (!res.ok) {
+      alert('댓글 등록에 실패했습니다.');
+      return;
     }
+
+    setContent('');
+    onCommentAdded();
   };
 
   return (
