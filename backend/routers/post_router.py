@@ -12,8 +12,11 @@ from bson import ObjectId
 from bson.errors import InvalidId
 from ..database import get_db
 from ..schemas.post_schema import Post, PostCreate
+from .deps import require_user
 
-router = APIRouter(prefix="/posts", tags=["posts"])
+router = APIRouter(
+    prefix="/posts", tags=["posts"], dependencies=[Depends(require_user)]
+)
 
 
 async def posts_collection(db=Depends(get_db)):

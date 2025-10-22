@@ -4,7 +4,7 @@ import { useForm } from '../hooks/useForm';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../api/client';
 
-function PostWrite() {
+export default function PostWrite() {
   const { values, handleChange, reset } = useForm({
     title: '',
     content: '',
@@ -61,5 +61,3 @@ function PostWrite() {
     </form>
   );
 }
-
-export default PostWrite;

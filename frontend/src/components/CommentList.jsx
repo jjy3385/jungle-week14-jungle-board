@@ -2,20 +2,11 @@ import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../api/client';
 
-function CommentList({ postId }) {
+export default function CommentList({ postId }) {
   const [comments, setComments] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [editContent, setEditContent] = useState('');
   const { user } = useAuth();
-
-  // const fetchComments = async () => {
-  //   const res = await apiFetch(`/comments/${postId}`);
-  //   if (!res.ok) {
-  //     alert('댓글을 불러오지 못했습니다.');
-  //     return;
-  //   }
-  //   setComments(await res.json());
-  // };
 
   const fetchComments = useCallback(async () => {
     const res = await apiFetch(`/comments/${postId}`);
@@ -52,18 +43,21 @@ function CommentList({ postId }) {
       alert('댓글 수정에 실패했습니다.');
     }
   };
-
   return (
     <div className="mt-4">
-      <h3 className="font-semibold mb-2">댓글 {comments.length}개</h3>
+      <h3 className="font-semibold mb-2 text-brand-navy">
+        댓글 {comments.length}개
+      </h3>
       {comments.map((c) => (
         <div
           key={c.id}
-          className="border rounded p-2 mb-2 bg-gray-50 flex flex-col"
+          className="border border-brand-skyBorder rounded p-2 mb-2 bg-brand-skyLight/40 flex flex-col"
         >
           <div className="flex justify-between">
-            <span className="font-semibold">{c.author}</span>
-            <span className="text-sm text-grey-500">
+            <span className="font-semibold text-brand-navyLight">
+              {c.author}
+            </span>
+            <span className="text-sm text-brand-muted">
               {new Date(c.createdAt).toLocaleString()}
             </span>
           </div>
@@ -73,18 +67,18 @@ function CommentList({ postId }) {
               <textarea
                 value={editContent}
                 onChange={(e) => setEditContent(e.target.value)}
-                className="border w-full p-1 mt-2"
+                className="border border-brand-skyBorder w-full p-1 mt-2 text-brand-navy"
               />
               <div className="mt-2 flex gap-2">
                 <button
                   onClick={() => handleEdit(c.id)}
-                  className="text-white bg-green-500 px-2 py-1 rounded"
+                  className="text-white bg-brand-sky px-2 py-1 rounded"
                 >
                   수정완료
                 </button>
                 <button
                   onClick={() => setEditingId(null)}
-                  className="text-white bg-gray-400 px-2 py-1 rounded"
+                  className="text-white bg-brand-muted px-2 py-1 rounded"
                 >
                   취소
                 </button>
@@ -92,8 +86,7 @@ function CommentList({ postId }) {
             </>
           ) : (
             <>
-              <p className="mt-2">{c.content}</p>
-              {/* 로그인 유저 == 작성자 일 때만 버튼 보이기 */}
+              <p className="mt-2 text-brand-navy">{c.content}</p>
               {user && user.username === c.author && (
                 <div className="flex gap-2 mt-2 text-sm">
                   <button
@@ -101,13 +94,13 @@ function CommentList({ postId }) {
                       setEditingId(c.id);
                       setEditContent(c.content);
                     }}
-                    className="text-blue-500"
+                    className="text-brand-navyLight"
                   >
                     수정
                   </button>
                   <button
                     onClick={() => handleDelete(c.id)}
-                    className="text-red-500"
+                    className="text-brand-muted"
                   >
                     삭제
                   </button>
@@ -120,5 +113,3 @@ function CommentList({ postId }) {
     </div>
   );
 }
-
-export default CommentList;

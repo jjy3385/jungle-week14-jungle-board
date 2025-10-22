@@ -2,7 +2,7 @@ import { useForm } from '../hooks/useForm';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-function LoginForm() {
+export default function LoginForm() {
   const { values, handleChange, reset } = useForm({
     username: '',
     password: '',
@@ -14,40 +14,48 @@ function LoginForm() {
     e.preventDefault();
     try {
       await login(values);
-      alert('로그인 성공!');
       reset();
       navigate('/');
-    } catch (error) {
-      alert(error.message);
+    } catch (err) {
+      alert(err.message ?? '로그인에 실패했습니다.');
     }
   };
-
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col gap-3 w-60 mx-auto mt-20"
-    >
-      <h2 className="text-xl font-bold text-center mb-3">로그인</h2>
-      <input
-        type="text"
-        name="username"
-        placeholder="아이디"
-        value={values.username}
-        onChange={handleChange}
-        className="border p-2 rounded"
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="비밀번호"
-        value={values.password}
-        onChange={handleChange}
-        className="border p-2 rounded"
-      />
-      <button type="submit" className="bg-blue-500 text-white rounded p-2 mt-2">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label className="block text-sm text-brand-navyLight mb-1">
+          아이디
+        </label>
+        <input
+          type="text"
+          name="username"
+          value={values.username}
+          onChange={handleChange}
+          className="w-full rounded-xl border border-brand-skyBorder bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-brand-sky text-brand-navy"
+          placeholder="아이디를 입력하세요"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm text-brand-navyLight mb-1">
+          비밀번호
+        </label>
+        <input
+          type="password"
+          name="password"
+          value={values.password}
+          onChange={handleChange}
+          className="w-full rounded-xl border border-brand-skyBorder bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-brand-sky text-brand-navy"
+          placeholder="비밀번호를 입력하세요"
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="w-full bg-brand-sky hover:bg-brand-navyLight text-white py-3 rounded-xl text-sm font-medium shadow-[0_10px_20px_rgba(85,166,255,0.35)] transition"
+      >
         로그인
       </button>
     </form>
   );
 }
-export default LoginForm;

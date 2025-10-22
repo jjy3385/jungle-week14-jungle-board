@@ -5,7 +5,7 @@ import CommentList from '../components/CommentList';
 import { apiFetch } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 
-function PostDetail() {
+export default function PostDetail() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -73,5 +73,3 @@ function PostDetail() {
     </div>
   );
 }
-
-export default PostDetail;

@@ -2,7 +2,7 @@ import { useForm } from '../hooks/useForm';
 import { useNavigate } from 'react-router-dom';
 import { apiFetch } from '../api/client';
 
-function SignupForm() {
+export default function SignupForm() {
   const { values, handleChange, reset } = useForm({
     username: '',
     email: '',
@@ -67,5 +67,3 @@ function SignupForm() {
     </form>
   );
 }
-
-export default SignupForm;

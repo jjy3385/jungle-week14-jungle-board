@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../api/client';
 
-function CommentForm({ postId, onCommentAdded }) {
+export default function CommentForm({ postId, onCommentAdded }) {
   const [content, setContent] = useState('');
   const { user } = useAuth();
 
@@ -34,16 +34,14 @@ function CommentForm({ postId, onCommentAdded }) {
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="댓글을 입력하세요"
-        className="w-full border rounded p-2"
+        className="w-full border border-brand-skyBorder rounded p-2 text-brand-navy"
       />
       <button
         type="submit"
-        className="mt-2 bg-blue-500 text-white px-3 py-1 rounded"
+        className="mt-2 bg-brand-sky hover:bg-brand-navyLight text-white px-3 py-1 rounded transition"
       >
         등록
       </button>
     </form>
   );
 }
-
-export default CommentForm;

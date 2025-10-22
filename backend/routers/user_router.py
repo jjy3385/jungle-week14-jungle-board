@@ -2,9 +2,15 @@ from fastapi import APIRouter, HTTPException, Depends, Request, status
 from ..schemas.user_schema import User, UserCreate, UserLogin
 from ..database import get_db
 from ..utils.password import hash_password, verify_password
+from .deps import require_user
 from bson import ObjectId
 
+
 router = APIRouter(tags=["users"])
+protected_user_router = APIRouter(
+    tags=["users"],
+    dependencies=[Depends(require_user)],
+)
 
 
 async def get_users_collection(db=Depends(get_db)):
@@ -39,13 +45,13 @@ async def login(
     return {"message": "로그인 성공"}
 
 
-@router.post("/logout")
+@protected_user_router.post("/logout")
 def logout(request: Request):
     request.session.clear()
     return {"message": "로그아웃 성공"}
 
 
-@router.get("/users/me", response_model=User)
+@protected_user_router.get("/users/me", response_model=User)
 async def me(request: Request, users=Depends(get_users_collection)):
     user_id = request.session.get("user_id")
     if not user_id:

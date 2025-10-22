@@ -4,7 +4,7 @@ import { useForm } from '../hooks/useForm';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../api/client';
 
-function PostEdit() {
+export default function PostEdit() {
   const { id } = useParams();
   const { values, handleChange, reset } = useForm({ title: '', content: '' });
   const navigate = useNavigate();
@@ -79,5 +79,3 @@ function PostEdit() {
     </form>
   );
 }
-
-export default PostEdit;

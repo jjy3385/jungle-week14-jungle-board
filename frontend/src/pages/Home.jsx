@@ -1,3 +1,4 @@
+import { Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import MiniHomeLayout from '../layouts/MiniHomeLayout';
 import Sidebar from '../components/Sidebar';
@@ -8,14 +9,18 @@ import { useAuth } from '../context/AuthContext';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('guestbook');
-  const { user, initializing } = useAuth();
+  const { user, initializing, logout } = useAuth();
 
   if (initializing) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-[#ff4d94]">
+      <div className="min-h-screen flex items-center justify-center text-brand-navyLight">
         로딩 중...
       </div>
     );
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
   }
 
   const sidebar = (
@@ -24,7 +29,7 @@ export default function Home() {
 
   return (
     <GuestbookProvider>
-      <MiniHomeLayout sidebar={sidebar}>
+      <MiniHomeLayout sidebar={sidebar} onLogout={logout}>
         {activeTab === 'guestbook' ? <GuestbookSection /> : <PostSection />}
       </MiniHomeLayout>
     </GuestbookProvider>
